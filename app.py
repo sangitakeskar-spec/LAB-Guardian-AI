@@ -65,8 +65,7 @@ with t2:
     c1,c2,c3,c4=st.columns(4)
     c1.metric('Specimens',len(view));c2.metric('Accepted',int((view.decision=='ACCEPT').sum()));c3.metric('Rejected',int((view.decision=='REJECT').sum()));c4.metric('Held for review',int((view.decision=='HOLD FOR REVIEW').sum()))
     if len(view):
-        counts = view.groupby(['department', 'decision']).size().reset_index(name='Count')
-st.plotly_chart(px.bar(counts, x='department', y='Count', color='decision', barmode='group', title='Decision by Department'), use_container_width=True)
+        st.plotly_chart(px.histogram(view,x='department',color='decision',barmode='group',title='Decision by department'),use_container_width=True)
         st.plotly_chart(px.bar(view.issue.value_counts().head(12).rename_axis('Issue').reset_index(name='Count'),x='Issue',y='Count',title='Top recorded specimen issues'),use_container_width=True)
         month=view.groupby(['month','decision']).size().reset_index(name='Count')
         st.plotly_chart(px.line(month,x='month',y='Count',color='decision',markers=True,title='Synthetic monthly trends'),use_container_width=True)
